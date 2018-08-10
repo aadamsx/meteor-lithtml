@@ -4,30 +4,32 @@ import { Router } from '@vaadin/router';
 
 // import '@polymer/paper-button/paper-button';
 
-// import './components/home-page.js';
-// import './components/books-demo.js';
+import './components/home-page.js';
+import './components/books-demo.js';
 // import './components/redux-demo.js';
-// import './components/not-found.js';
+import './components/not-found.js';
 
+import { AppStyles } from './styles/AppStyles';
 
 class LitApp extends LitElement {
 
 	_firstRendered(){
-		// const router = new Router(this.shadowRoot.querySelector('#outlet'));
+		const router = new Router(this.shadowRoot.querySelector('#outlet'));
 
-		// router.setRoutes([
-		// 	{path: '/', component: 'home-page'},
-		// 	{path: '/books', component: 'books-demo'},
+		router.setRoutes([
+			{path: '/', component: 'home-page'},
+			{path: '/books', component: 'books-demo'},
 		// 	{path: '/redux', component: 'redux-demo'},
-		// 	{path: '(.*)', component: 'not-found'}
-		// ]);
+			{path: '(.*)', component: 'not-found'}
+		]);
 	}
 
 	_render() {
-		return html`
+    return html`
+    	${AppStyles}
 			<div class="app">
 				<header class="app-header">
-					<img src="../assets/logo.svg" class="app-logo" alt="logo" />
+					<img src="./public/Aaron.jpg" class="app-logo" alt="logo" />
 					<h1 class="app-title">Welcome to LitHTML</h1>
 				</header>
 
@@ -40,7 +42,7 @@ class LitApp extends LitElement {
 				<div id="outlet"></div>
 
 				<a href="https://github.com/thepassle/create-lit-app">
-					<img src="../assets/github.svg" class="app-gh" alt />
+					<img src="./public/github.svg" class="app-gh" alt />
 				</a>
 			</div>
 		`;
