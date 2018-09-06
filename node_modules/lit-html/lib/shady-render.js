@@ -11,11 +11,27 @@
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
-import { removeNodes, Template, templateCaches, TemplateInstance } from '../lit-html.js';
+import { removeNodes } from './dom.js';
 import { insertNodeIntoTemplate, removeNodesFromTemplate } from './modify-template.js';
+import { templateInstances } from './render.js';
+import { templateCaches } from './template-factory.js';
+import { TemplateInstance } from './template-instance.js';
+import { Template } from './template.js';
 export { html, svg, TemplateResult } from '../lit-html.js';
 // Get a key to lookup in `templateCaches`.
 const getTemplateCacheKey = (type, scopeName) => `${type}--${scopeName}`;
+const verifyShadyCSSVersion = () => {
+    if (typeof window.ShadyCSS === 'undefined') {
+        return false;
+    }
+    if (typeof window.ShadyCSS.prepareTemplateDom === 'undefined') {
+        console.warn(`Incompatible ShadyCSS version detected.` +
+            `Please update to at least @webcomponents/webcomponentsjs@2.0.2 and` +
+            `@webcomponents/shadycss@1.3.1.`);
+        return false;
+    }
+    return true;
+};
 /**
  * Template factory which scopes template DOM using ShadyCSS.
  * @param scopeName {string}
@@ -30,7 +46,7 @@ const shadyTemplateFactory = (scopeName) => (result) => {
     let template = templateCache.get(result.strings);
     if (template === undefined) {
         const element = result.getTemplateElement();
-        if (typeof window.ShadyCSS === 'object') {
+        if (verifyShadyCSSVersion()) {
             window.ShadyCSS.prepareTemplateDom(element, scopeName);
         }
         template = new Template(result, element);
@@ -48,8 +64,12 @@ function removeStylesFromLitTemplates(scopeName) {
         if (templates !== undefined) {
             templates.forEach((template) => {
                 const { element: { content } } = template;
-                const styles = content.querySelectorAll('style');
-                removeNodesFromTemplate(template, new Set(Array.from(styles)));
+                // IE 11 doesn't support the iterable param Set constructor
+                const styles = new Set();
+                Array.from(content.querySelectorAll('style')).forEach((s) => {
+                    styles.add(s);
+                });
+                removeNodesFromTemplate(template, styles);
             });
         }
     });
@@ -66,7 +86,8 @@ const shadyRenderSet = new Set();
  * Note, <style> elements can only be placed into templates for the
  * initial rendering of the scope. If <style> elements are included in templates
  * dynamically rendered to the scope (after the first scope render), they will
- * not be scoped and the <style> will be left in the template and rendered output.
+ * not be scoped and the <style> will be left in the template and rendered
+ * output.
  */
 const ensureStylesScoped = (fragment, template, scopeName) => {
     // only scope element template once per scope name
@@ -101,24 +122,21 @@ const ensureStylesScoped = (fragment, template, scopeName) => {
 export function render(result, container, scopeName) {
     const templateFactory = shadyTemplateFactory(scopeName);
     const template = templateFactory(result);
-    let instance = container.__templateInstance;
+    let instance = templateInstances.get(container);
     // Repeat render, just call update()
     if (instance !== undefined && instance.template === template &&
-        instance._partCallback === result.partCallback) {
+        instance.processor === result.processor) {
         instance.update(result.values);
         return;
     }
     // First render, create a new TemplateInstance and append it
-    instance =
-        new TemplateInstance(template, result.partCallback, templateFactory);
-    container.__templateInstance = instance;
+    instance = new TemplateInstance(template, result.processor, templateFactory);
+    templateInstances.set(container, instance);
     const fragment = instance._clone();
     instance.update(result.values);
-    const host = container instanceof ShadowRoot ?
-        container.host :
-        undefined;
+    const host = container instanceof ShadowRoot ? container.host : undefined;
     // If there's a shadow host, do ShadyCSS scoping...
-    if (host !== undefined && typeof window.ShadyCSS === 'object') {
+    if (host !== undefined && verifyShadyCSSVersion()) {
         ensureStylesScoped(fragment, template, scopeName);
         window.ShadyCSS.styleElement(host);
     }

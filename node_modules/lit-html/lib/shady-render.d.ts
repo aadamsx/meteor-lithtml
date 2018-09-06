@@ -11,7 +11,7 @@
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
-import { TemplateResult } from '../lit-html.js';
+import { TemplateResult } from './template-result.js';
 export { html, svg, TemplateResult } from '../lit-html.js';
 declare global {
     interface Window {

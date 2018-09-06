@@ -11,7 +11,7 @@
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
-import { Template } from '../lit-html.js';
+import { Template } from './template.js';
 /**
  * Removes the list of nodes from a Template safely. In addition to removing
  * nodes from the Template, the Template part indices are updated to match
@@ -25,7 +25,8 @@ import { Template } from '../lit-html.js';
  *     div
  *       div#2 (remove)  <-- continue removing (removing node is still div#1)
  *         div
- * div <-- stop removing since previous sibling is the removing node (div#1, removed 4 nodes)
+ * div <-- stop removing since previous sibling is the removing node (div#1,
+ * removed 4 nodes)
  */
 export declare function removeNodesFromTemplate(template: Template, nodesToRemove: Set<Node>): void;
 /**
