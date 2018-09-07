@@ -1,4 +1,4 @@
-import { LitElement, html, property } from '@polymer/lit-element';
+import { LitElement, html } from '@polymer/lit-element';
 import './x-counter.js';
 
 // imperative way to interact with web component
