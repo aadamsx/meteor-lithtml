@@ -5,6 +5,14 @@ class XCounter extends LitElement {
   @property({type: Number})
   value = 0;
 
+  // If not using Babel or TypeScript you can
+  // define properties with
+  // static get properties() {
+  //   return {
+  //     value: 0
+  //   }
+  // }
+
   render() {
     return html`
       <style>
