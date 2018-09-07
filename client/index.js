@@ -6,9 +6,10 @@ const counter = document.querySelector('x-counter');
 counter.value = 10;
 counter.addEventListener('valueChange', (e) => console.log(e));
 
+
 // Declareative template binding to interact with web component
 class XApp extends LitElement {
-  customValue = 2;
+  customValue = 5;
 
   render() {
     return html`

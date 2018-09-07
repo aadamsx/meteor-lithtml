@@ -1,7 +1,8 @@
 import { LitElement, html, property } from '@polymer/lit-element';
 
 class XCounter extends LitElement {
-  // Decorator
+  // If using TypeScript or Babel compile
+  // steps advanced decorators are available
   @property({type: Number})
   value = 0;
 
@@ -43,3 +44,6 @@ class XCounter extends LitElement {
 }
 
 customElements.define('x-counter', XCounter);
+
+
+
