@@ -1,4 +1,5 @@
 import { LitElement, html, property } from '@polymer/lit-element';
+// import { html } from 'lit-html';
 
 class XCounter extends LitElement {
   // If using TypeScript or Babel compile
@@ -38,6 +39,7 @@ class XCounter extends LitElement {
   }
 
   _valueChanged() {
+    console.log(`this.value is: ${this.value}`)
     // Fire a custom event for others to listen to
     this.dispatchEvent(new CustomEvent('valueChange', { detail: this.value }));
   }
