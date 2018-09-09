@@ -1,19 +1,21 @@
 import { LitElement, html, property } from '@polymer/lit-element';
 // import { html } from 'lit-html';
+// import {LitElement} from 'https://unpkg.com/@polymer/lit-element@~0.6.0-dev.6/lit-element.js?module';
+// import {html} from 'https://unpkg.com/lit-html@latest/lit-html.js?module';
 
 class XCounter extends LitElement {
   // If using TypeScript or Babel compile
   // steps advanced decorators are available
-  @property({type: Number})
-  value = 0;
+  // @property({type: Number})
+  // value = 0;
 
   // If not using Babel or TypeScript you can
   // define properties with
-  // static get properties() {
-  //   return {
-  //     value: 0
-  //   }
-  // }
+  static get properties() {
+    return {
+      value: 0
+    }
+  }
 
   render() {
     return html`
