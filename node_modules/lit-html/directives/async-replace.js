@@ -47,7 +47,7 @@ export const asyncReplace = (value, mapper) => directive(async (part) => {
     // We nest a new part to keep track of previous item values separately
     // of the iterable as a value itself.
     const itemPart = new NodePart(part.templateFactory);
-    part.value = itemPart;
+    part.value = value;
     let i = 0;
     try {
         for (var value_1 = __asyncValues(value), value_1_1; value_1_1 = await value_1.next(), !value_1_1.done;) {
@@ -60,7 +60,7 @@ export const asyncReplace = (value, mapper) => directive(async (part) => {
             }
             // Check to make sure that value is the still the current value of
             // the part, and if not bail because a new value owns this part
-            if (part.value !== itemPart) {
+            if (part.value !== value) {
                 break;
             }
             // As a convenience, because functional-programming-style

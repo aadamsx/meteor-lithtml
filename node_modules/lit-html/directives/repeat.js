@@ -11,7 +11,7 @@
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
-import { directive, NodePart, removeNodes, reparentNodes } from '../lit-html.js';
+import { createMarker, directive, NodePart, removeNodes, reparentNodes } from '../lit-html.js';
 const keyMapCache = new WeakMap();
 function cleanMap(part, key, map) {
     if (!part.startNode.parentNode) {
@@ -57,8 +57,8 @@ export function repeat(items, keyFnOrTemplate, template) {
                 // keyMapCache and use part._value instead.
                 // But... repeat() is badly in need of rewriting, so we'll do this for
                 // now and revisit soon.
-                const marker = document.createComment('');
-                const endNode = document.createComment('');
+                const marker = createMarker();
+                const endNode = createMarker();
                 container.insertBefore(marker, currentMarker);
                 container.insertBefore(endNode, currentMarker);
                 itemPart = new NodePart(part.templateFactory);

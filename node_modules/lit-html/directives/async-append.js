@@ -18,7 +18,7 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
-import { directive, NodePart } from '../lit-html.js';
+import { createMarker, directive, NodePart } from '../lit-html.js';
 /**
  * A directive that renders the items of an async iterable[1], appending new
  * values after previous values, similar to the built-in support for iterables.
@@ -78,7 +78,7 @@ export const asyncAppend = (value, mapper) => directive(async (part) => {
             // Check to see if we have a previous item and Part
             if (itemPart !== undefined) {
                 // Create a new node to separate the previous and next Parts
-                itemStartNode = document.createComment('');
+                itemStartNode = createMarker();
                 // itemPart is currently the Part for the previous item. Set
                 // it's endNode to the node we'll use for the next Part's
                 // startNode.

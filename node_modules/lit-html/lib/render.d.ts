@@ -11,10 +11,10 @@
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
+import { NodePart } from './parts.js';
 import { TemplateFactory } from './template-factory.js';
-import { TemplateInstance } from './template-instance.js';
 import { TemplateResult } from './template-result.js';
-export declare const templateInstances: WeakMap<Node, TemplateInstance>;
+export declare const parts: WeakMap<Node, NodePart>;
 /**
  * Renders a template to a container.
  *
