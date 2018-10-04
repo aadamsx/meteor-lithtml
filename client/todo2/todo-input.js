@@ -49,7 +49,7 @@ export default class TodoInput extends LitElement {
     return html`
         ${TodoInputStyles}
         <form @submit="${this.onSubmit}">
-            <input class=".red" type="text" placeholder="What needs to be done?" />
+            <wired-input type="text" placeholder="What needs to be done?" /><wired-input>
         </form>
       `;
   }

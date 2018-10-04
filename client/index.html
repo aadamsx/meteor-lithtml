@@ -18,10 +18,21 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <a href="../" id="back">⬅ Back</a>
+    <!-- <a href="../" id="back">⬅ Back</a> -->
     <!-- <my-todo></my-todo> -->
     <to-do></to-do>
-
+    <script>
+      DecoupledEditor
+          .create( document.querySelector( '#editor' ) )
+          .then( editor => {
+              const toolbarContainer = document.querySelector( '#toolbar-container' );
+  
+              toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+          } )
+          .catch( error => {
+              console.error( error );
+          } );
+  </script>
   </body>
 
 

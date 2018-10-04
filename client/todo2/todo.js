@@ -3,6 +3,9 @@ import {repeat} from 'lit-html/directives/repeat.js';
 import {style} from './todo-styles.js';
 import './todo-items.js';
 // import Logo from './assets/logo.png';
+import { WiredInput } from '../components/wired-input';
+import { WiredButton } from '../components/wired-button';
+import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document/src/ckeditor';
 
 export class ToDo extends LitElement {
   /**
@@ -26,6 +29,17 @@ export class ToDo extends LitElement {
     this.createNewToDoItem = this.createNewToDoItem.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleInput = this.handleInput.bind(this);
+
+    DecoupledEditor
+    .create( document.querySelector( '#editor' ) )
+      .then( editor => {
+          const toolbarContainer = document.querySelector( '#toolbar-container' );
+
+          toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+      } )
+      .catch( error => {
+          console.error( error );
+      } );
   }
 
   todoItem(todo) {
@@ -61,10 +75,7 @@ export class ToDo extends LitElement {
 
   render() {
     return html`
-    ${style}
     <div class="ToDo">
-      <h1>LitElement</h1>
-      <h1 class="ToDo-Header">LitElement To Do</h1>
       <div class="ToDo-Container">
         <div class="ToDo-Content">
           ${repeat(
@@ -80,18 +91,19 @@ export class ToDo extends LitElement {
           )}
         </div>
         <div>
-          <input
+          <wired-input
             type="text"
             .value=${this.todo}
             @input=${this.handleInput}
             @keypress=${this.handleKeyPress}
-          />
-          <button
+          /></wired-input>
+          <wired-button
             class="ToDo-Add"
             @click=${this.createNewToDoItem}
-          >+</button>
+          >+</wired-button>
         </div>
       </div>
+      <textarea name="content" id="editor"></textarea>
     </div>
     `;
   }
